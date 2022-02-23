@@ -1,0 +1,34 @@
+{
+  "title": "TUIOST Notice API Server",
+  "description": "",
+  "author": {
+    "name": "shree krishna lamichhane",
+    "url": "https://shreekrishnalamichhane.com.np"
+  },
+  "routes": {
+    "watchNotice": {
+      "url": "https://notice.bsccsitnepal.com/watch/notice",
+      "description": "Get latest notices (Max 20)."
+    },
+    "watchResult": {
+      "url": "https://notice.bsccsitnepal.com/watch/result",
+      "description": "Get latest results (Max 20)."
+    },
+    "watchSchedule": {
+      "url": "https://notice.bsccsitnepal.com/watch/schedule",
+      "description": "Get latest schedules (Max 20)."
+    },
+    "getNotice": {
+      "url": "https://notice.bsccsitnepal.com/get/notice",
+      "description": "Get all notices ."
+    },
+    "getResult": {
+      "url": "https://notice.bsccsitnepal.com/get/result",
+      "description": "Get all results ."
+    },
+    "getSchedule": {
+      "url": "https://notice.bsccsitnepal.com/get/schedule",
+      "description": "Get all schedules ."
+    }
+  }
+}

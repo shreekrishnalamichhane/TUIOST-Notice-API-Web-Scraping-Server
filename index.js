@@ -1,6 +1,7 @@
 let express = require("express");
 const { Promise } = require("node-fetch");
 const fetch = require("node-fetch");
+const fs = require("fs");
 const {
   hashCode,
   getTotalPages,
@@ -11,6 +12,18 @@ const {
 let DOMParser = require("xmldom").DOMParser;
 let parser = new DOMParser({ errorHandler: function () {} });
 let app = express();
+app.get("/", async (req, res, next) => {
+  try {
+    var filePath = "./intro.json";
+    fs.readFile(filePath, function (error, content) {
+      var data = JSON.parse(content);
+      console.log(data);
+      res.json(data);
+    });
+  } catch (error) {
+    res.json(error.message);
+  }
+});
 
 app.get("/watch/notice", async (req, res, next) => {
   try {
