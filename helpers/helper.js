@@ -1,6 +1,7 @@
 var proxyAddress = "https://api.codetabs.com/v1/proxy/?quest=";
 const fetch = require("node-fetch");
 var DOMParser = require("xmldom").DOMParser;
+require("dotenv").config();
 var parser = new DOMParser();
 
 module.exports = {
@@ -40,4 +41,42 @@ module.exports = {
       return obj1[key] + obj2[key];
     });
   },
+
+  intro: (req, res) => {
+    res.status(200).json({
+      "title": process.env.APP_TITLE,
+      "description": process.env.APP_DESCRIPTION,
+      "author": {
+        "name": "Shree Krishna Lamichhane",
+        "url": "https://shreekrishnalamichhane.com.np",
+        "github": "https://github.com/shreekrishnalamichhane"
+      },
+      "routes": {
+        "watchNotice": {
+          "url": process.env.APP_URL + "watch/notice",
+          "description": "Get latest notices (Max 20)."
+        },
+        "watchResult": {
+          "url": process.env.APP_URL + "watch/result",
+          "description": "Get latest results (Max 20)."
+        },
+        "watchSchedule": {
+          "url": process.env.APP_URL + "watch/schedule",
+          "description": "Get latest schedules (Max 20)."
+        },
+        "getNotice": {
+          "url": process.env.APP_URL + "get/notice",
+          "description": "Get all notices ."
+        },
+        "getResult": {
+          "url": process.env.APP_URL + "get/result",
+          "description": "Get all results ."
+        },
+        "getSchedule": {
+          "url": process.env.APP_URL + "get/schedule",
+          "description": "Get all schedules ."
+        }
+      }
+    });
+  }
 };
