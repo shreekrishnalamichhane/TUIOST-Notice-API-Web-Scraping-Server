@@ -6,6 +6,7 @@ const BrowserService = {
             headless: true,
             args: ["--no-sandbox", "--disabled-setupid-sandbox"],
             ignoreDefaultArgs: ['--disable-extensions'],
+            executablePath: '/usr/bin/google-chrome'
         });
     },
     goto: async (browser: any, url: string) => {

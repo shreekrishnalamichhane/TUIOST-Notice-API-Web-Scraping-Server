@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  scraper:
+    env_file:
+      - ./.env
+    build: ./
+    ports:
+      - "7000:3000"
+    restart: on-failure
