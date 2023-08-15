@@ -1,5 +1,6 @@
 import { Response } from "express";
 import Utils from "../Helpers/Utils";
+import moment from "moment";
 
 const ResponseService = {
     response: (response: Response, success: boolean = true, statusCode: number = 200, message: string = "", data: any = []) => {
@@ -7,8 +8,8 @@ const ResponseService = {
             success: success,
             statusCode: statusCode,
             message: message,
-            serverTime: new Date(),
-            data: Utils.sortJson(data, "timestamp")
+            serverTime: moment().locale("np").format("YYYY-MM-DD hh:mm:ss A"),
+            data: data ?? null
         });
     }
 };

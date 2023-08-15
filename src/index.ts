@@ -1,29 +1,27 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
+dotenv.config();
 
 import IntroRouter from "./Routes/Intro";
-import ScheduleRouter from "./Routes/Schedule";
-import ResultRouter from "./Routes/Result";
 import NoticeRouter from "./Routes/Notice";
 import BrowserService from "./Services/BrowserService";
+import moment from "moment";
 
-dotenv.config();
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+const logger = (req: Request, res: Response, next: NextFunction) => {
+    console.log(`[${moment().locale("np").format("YYYY-MM-DD hh:mm:ss A")}][${req.ip}] ${req.method} ${req.url}`);
+    next();
+}
 (async () => {
     let browser = await BrowserService.init();
-
-    app.use('/', IntroRouter);
-    app.use('/notice', (req, res, next) => { req.browser = browser; next() }, NoticeRouter);
-    app.use('/result', (req, res, next) => { req.browser = browser; next() }, ResultRouter);
-    app.use('/schedule', (req, res, next) => { req.browser = browser; next() }, ScheduleRouter);
+    app.use('/', [logger], IntroRouter);
+    app.use('/notice', [(req: Request, res: Response, next: NextFunction) => { res.locals.browser = browser; next() }, logger], NoticeRouter);
 })();
-
-
 
 export default app;
 

@@ -1,4 +1,4 @@
-FROM node:lts-slim AS app
+FROM node:lts AS app
 
 # We don't need the standalone Chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
