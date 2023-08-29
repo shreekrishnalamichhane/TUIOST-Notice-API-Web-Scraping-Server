@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import cors from 'cors';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({ origin: '*', credentials: true }));
 
 const logger = (req: Request, res: Response, next: NextFunction) => {
     console.log(`[${moment().locale("np").format("YYYY-MM-DD hh:mm:ss A")}][${req.ip}] ${req.method} ${req.url}`);
