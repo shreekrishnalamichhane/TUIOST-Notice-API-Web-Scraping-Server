@@ -31,6 +31,7 @@ const ScraperService = {
             return {
                 'title': document.querySelector('.inner-downloads table tbody tr > td:nth-child(2)')?.textContent?.substring(1),
                 'link': document.querySelector('.inner-downloads table tbody tr ')?.querySelector('a')?.href,
+                'date': document.querySelector('.detail-page-inner .date #nep_date')?.textContent?.trim(),
             };
         });
         page.close();
