@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser, Page } from 'puppeteer';
 
 const BrowserService = {
     // Browser init
@@ -12,8 +12,8 @@ const BrowserService = {
     },
 
     // Page goto
-    goto: async (browser: any, url: string) => {
-        const page = await browser.newPage();
+    goto: async (browser: Browser, url: string) => {
+        const page: Page = await browser.newPage();
         await page.goto(url, { waitUntil: 'load', timeout: 0 });
         return page;
     }

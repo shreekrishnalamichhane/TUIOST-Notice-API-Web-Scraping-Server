@@ -1,8 +1,9 @@
 export type TNoticeItem = {
-    "title": string,
-    "link": string,
-    "hash": string,
-    "author": string,
+    "title": string | undefined,
+    "link": string | undefined,
+    'date': string | undefined,
+    "hash": string | undefined,
+    "author": string | undefined,
 }
 
 export type TCacheData = {

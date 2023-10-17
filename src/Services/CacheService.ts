@@ -1,6 +1,6 @@
 import fs from 'fs';
 import moment from 'moment';
-import { TCacheData } from '../@types/types';
+import { TCacheData, TNoticeItem } from '../@types/types';
 import { Browser } from 'puppeteer';
 
 import ScraperService from "../Services/ScrapeService";
@@ -63,22 +63,22 @@ const CacheService = {
         let page = await ScraperService.scrape(browser, TUIOST_URL + '/' + key);
 
         // Get the links from the page
-        let links: any[] = await ScraperService.getLinks(page);
+        let links: string[] = await ScraperService.getLinks(page);
 
-        // Get the content from the every links
-        const data = links.map(async (link: any) => {
-            const page = await ScraperService.scrape(browser, link);
+        // Initialize the data
+        let data: TNoticeItem[] = [];
+
+        // Loop through the links and get the content
+        for (let index = 0; index < links.length; index++) {
+            const page = await ScraperService.scrape(browser, links[index]);
             const content = await ScraperService.getLinkContent(page);
-            return content;
-        });
-
-        // Resolve the data
-        let dataResolved: any = await Promise.all(data);
+            if (content) data.push(content);
+        }
 
         // Prepare the cache data
         const cache: TCacheData = {
             expiredAt: parseInt(moment().add(CACHE_EXPIRY_IN_MINUTES, 'm').unix().toString() + "000"),
-            data: dataResolved,
+            data
         }
 
         // Set the cache
