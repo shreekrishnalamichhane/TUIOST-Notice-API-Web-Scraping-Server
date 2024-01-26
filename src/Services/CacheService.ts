@@ -5,6 +5,7 @@ import { Browser } from 'puppeteer';
 
 import ScraperService from "../Services/ScrapeService";
 import Log from '../Helpers/Log';
+import Discord from '../Helpers/Discord';
 let SCRAPER_RUNNING = false;
 const TUIOST_URL = process.env.TUIOST_URL || 'https://iost.tu.edu.np';
 const CACHE_EXPIRY_IN_MINUTES = parseFloat(process.env.CACHE_EXPIRY_DURATION || "1");
@@ -62,8 +63,11 @@ const CacheService = {
 
         // Set the scrapper running timeout to 15 seconds
         setTimeout(() => {
-            SCRAPER_RUNNING = false;
-            Log.syslog('CACHE : Caching process timed out...');
+            if (SCRAPER_RUNNING) {
+                SCRAPER_RUNNING = false;
+                Log.syslog('CACHE : Caching process timed out...');
+                Discord.message("Scraper Server Timed Out..");
+            }
         }, SCRAPER_TIMEOUT_DURATION * 1000);  // SCRAPER_TIMEOUT_DURATION in seconds
 
         // Scrape the page
