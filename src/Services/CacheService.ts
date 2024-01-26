@@ -4,10 +4,11 @@ import { TCacheData, TNoticeItem } from '../@types/types';
 import { Browser } from 'puppeteer';
 
 import ScraperService from "../Services/ScrapeService";
+import Log from '../Helpers/Log';
 let SCRAPER_RUNNING = false;
 const TUIOST_URL = process.env.TUIOST_URL || 'https://iost.tu.edu.np';
 const CACHE_EXPIRY_IN_MINUTES = parseFloat(process.env.CACHE_EXPIRY_DURATION || "1");
-
+const SCRAPER_TIMEOUT_DURATION = parseFloat(process.env.SCRAPER_TIMEOUT_DURATION || "30");
 
 const CacheService = {
     // Get a value from the cache
@@ -41,7 +42,7 @@ const CacheService = {
             return true;
         } catch (error) {
             // Log the error and return false
-            console.log(error);
+            Log.syslog(error);
             return false;
         }
     },
@@ -49,15 +50,21 @@ const CacheService = {
     cache: async (browser: Browser, key: string) => {
         // Check if the scraper is already running
         if (SCRAPER_RUNNING) {
-            console.log(`[${moment().locale("np").format("YYYY-MM-DD hh:mm:ss A")}][Server] CACHE : Caching is already running...`);
+            Log.syslog('CACHE : Caching is already running...');
             return;
         }
 
         // Else, start scraping
-        console.log(`[${moment().locale("np").format("YYYY-MM-DD hh:mm:ss A")}][Server] CACHE : Caching process started...`);
+        Log.syslog('CACHE : Caching process started...');
 
         // Set the scraper running
         SCRAPER_RUNNING = true;
+
+        // Set the scrapper running timeout to 15 seconds
+        setTimeout(() => {
+            SCRAPER_RUNNING = false;
+            Log.syslog('CACHE : Caching process timed out...');
+        }, SCRAPER_TIMEOUT_DURATION * 1000);  // SCRAPER_TIMEOUT_DURATION in seconds
 
         // Scrape the page
         let page = await ScraperService.scrape(browser, TUIOST_URL + '/' + key);
@@ -85,7 +92,7 @@ const CacheService = {
         CacheService.set(key, cache);
         SCRAPER_RUNNING = false;
 
-        console.log(`[${moment().locale("np").format("YYYY-MM-DD hh:mm:ss A")}][Server] CACHE : Caching process completed...`);
+        Log.syslog('CACHE : Caching process completed...');
     }
 }
 
