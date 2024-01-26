@@ -8,4 +8,5 @@ services:
       - "7000:3000"
     volumes:
       - ./cache:/app/cache
+      - ./log:/app/log
     restart: on-failure
