@@ -2,6 +2,8 @@ import fs from 'fs';
 import moment from 'moment';
 import { TCacheData, TNoticeItem } from '../@types/types';
 import { Browser } from 'puppeteer';
+import dotenv from "dotenv";
+dotenv.config();
 
 import ScraperService from "../Services/ScrapeService";
 import Log from '../Helpers/Log';
@@ -73,6 +75,9 @@ const CacheService = {
 
         // Get the links from the page
         let links: string[] = await ScraperService.getLinks(page);
+
+        // Close the primary page
+        page.close();
 
         // Initialize the data
         let data: TNoticeItem[] = [];
